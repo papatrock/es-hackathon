@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: hackathon_db
+    restart: always
+    environment:
+      POSTGRES_DB: hackathondb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: adminpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: hackathon_backend
+    profiles: ["all"]
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/hackathondb
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=adminpassword
+
+volumes:
+  postgres_data:
