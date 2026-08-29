@@ -16,7 +16,7 @@ $ docker compose --profile all down
 docker compose --profile all down -v
 
 # Recria a imagem do zero
-$ docker compose --profile completo up -d --build --force-recreate
+$ docker compose --profile all up -d --build --force-recreate
 ```
 
 **sem docker**
