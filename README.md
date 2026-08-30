@@ -1,3 +1,7 @@
+Requisitos
+Java 21
+
+
 **comandos docker**
 
 ```bash
