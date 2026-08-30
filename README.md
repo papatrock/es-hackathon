@@ -30,7 +30,7 @@ $ docker compose --profile all up -d --build --force-recreate
 $ mvn spring-boot:run
 ```
 
-(Swagger)URL: http://localhost:8080/swagger-ui
+(Swagger)URL: http://localhost:8080/swagger-ui/index.html
 
 ## Dependencias adicionadas
 
