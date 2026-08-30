@@ -1,0 +1,25 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Organizador" as org
+control "HackathonController" as ctrl
+database "Banco de Dados" as db
+
+org -> ctrl : POST /api/hackathons (nome, datas, limite)
+activate ctrl
+
+ctrl -> ctrl : Validar regras de negócio (Datas e Limite)
+
+alt Dados Inválidos
+    ctrl --> org : Erro de Validação (400 Bad Request)
+else Dados Válidos
+    ctrl -> db : Salvar entidade Hackathon
+    activate db
+    db --> ctrl : Confirmação de persistência
+    deactivate db
+    ctrl --> org : Sucesso (201 Created)
+end
+
+deactivate ctrl
+@enduml
