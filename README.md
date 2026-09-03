@@ -40,3 +40,7 @@ $ mvn spring-boot:run
 * Lombok: Redução de código boilerplate (Getters, Setters e Construtores).
 * SpringDoc OpenAPI (Starter WebMVC UI): Geração e renderização automática do Swagger.
 * Spring Boot DevTools: Live reload para recarregamento rápido durante o desenvolvimento.
+
+US = User Story        → item do backlog
+UC = Use Case          → Caso de Uso
+SD = Sequence Diagram  → Diagrama de Sequência

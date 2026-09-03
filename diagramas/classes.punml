@@ -1,0 +1,24 @@
+@startuml
+
+class Hackathon {
+    nome
+    dataInicio
+    dataTermino
+    maxEquipes
+}
+
+class Equipe {
+    nome
+}
+
+class Participante
+
+Hackathon "1" -- "0..*" Equipe : possui
+Equipe "0..*" -- "1..*" Participante : formada por
+
+note right of Hackathon
+  dataTermino >= dataInicio
+  quantidade de equipes <= maxEquipes
+end note
+
+@enduml

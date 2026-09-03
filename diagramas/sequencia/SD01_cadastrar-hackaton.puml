@@ -1,0 +1,31 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Organizador as org
+control "HackathonController" as ctrl
+entity "HackathonRepository" as repo
+database "PostgreSQL" as db
+
+org -> ctrl : cadastrarHackathon(nome, datas, limite)
+activate ctrl
+
+ctrl -> ctrl : validar dados
+
+alt Dados inválidos
+    ctrl --> org : erro de validação
+else Dados válidos
+    ctrl -> repo : save(hackathon)
+    activate repo
+
+    repo -> db : persistir hackathon
+    db --> repo : confirmação
+
+    repo --> ctrl : hackathon salvo
+    deactivate repo
+
+    ctrl --> org : cadastro realizado
+end
+
+deactivate ctrl
+@enduml

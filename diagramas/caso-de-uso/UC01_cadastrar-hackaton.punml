@@ -1,0 +1,21 @@
+@startuml
+
+left to right direction
+
+actor Organizador
+actor Participante
+
+rectangle "Sistema de Hackathons" {
+    usecase "UC01\nCadastrar Hackathon" as UC01
+    usecase "UC02\nCadastrar Participante" as UC02
+    usecase "UC03\nCriar Equipe" as UC03
+    usecase "UC04\nAdicionar Participante\nà Equipe" as UC04
+}
+
+Organizador --> UC01
+
+Participante --> UC02
+Participante --> UC03
+Participante --> UC04
+
+@enduml
