@@ -1,0 +1,71 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Participante as solicitante
+control "EquipeController" as ctrl
+entity "EquipeRepository" as equipeRepo
+entity "ParticipanteRepository" as participanteRepo
+database "Banco de Dados" as db
+
+solicitante -> ctrl : POST /api/equipes/{equipeId}/participantes
+activate ctrl
+
+ctrl -> equipeRepo : findById(equipeId)
+activate equipeRepo
+
+equipeRepo -> db : Buscar equipe
+activate db
+db --> equipeRepo : resultado
+deactivate db
+
+equipeRepo --> ctrl : resultado
+deactivate equipeRepo
+
+alt Equipe inexistente
+    ctrl --> solicitante : 404 Not Found
+
+else Equipe existente
+
+    ctrl -> participanteRepo : findById(participanteId)
+    activate participanteRepo
+
+    participanteRepo -> db : Buscar participante
+    activate db
+    db --> participanteRepo : resultado
+    deactivate db
+
+    participanteRepo --> ctrl : resultado
+    deactivate participanteRepo
+
+    alt Participante inexistente
+        ctrl --> solicitante : 404 Not Found
+
+    else Participante existente
+
+        ctrl -> ctrl : Verificar se participante\njá pertence à equipe
+
+        alt Participante já pertence à equipe
+            ctrl --> solicitante : Erro de Validação (400 Bad Request)
+
+        else Participante ainda não pertence
+            ctrl -> ctrl : Associar participante à equipe
+
+            ctrl -> equipeRepo : save(equipe)
+            activate equipeRepo
+
+            equipeRepo -> db : Persistir associação
+            activate db
+            db --> equipeRepo : confirmação
+            deactivate db
+
+            equipeRepo --> ctrl : Equipe atualizada
+            deactivate equipeRepo
+
+            ctrl --> solicitante : Sucesso
+        end
+    end
+end
+
+deactivate ctrl
+@enduml
