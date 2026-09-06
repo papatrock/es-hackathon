@@ -1,0 +1,36 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Estudante" as estudante
+control "ParticipanteController" as ctrl
+entity "ParticipanteRepository" as repo
+database "Banco de Dados" as db
+
+estudante -> ctrl : POST /api/participantes (dadosParticipante)
+activate ctrl
+
+ctrl -> ctrl : Validar dados obrigatórios
+
+alt Dados Inválidos
+    ctrl --> estudante : Erro de Validação (400 Bad Request)
+
+else Dados Válidos
+    ctrl -> repo : save(participante)
+    activate repo
+
+    repo -> db : INSERT INTO participante
+    activate db
+
+    db --> repo : Confirmação de persistência
+    deactivate db
+
+    repo --> ctrl : Participante salvo com ID
+    deactivate repo
+
+    ctrl --> estudante : Sucesso (201 Created)
+end
+
+deactivate ctrl
+
+@enduml
