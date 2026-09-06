@@ -1,0 +1,58 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Participante as participante
+control "EquipeController" as ctrl
+entity "HackathonRepository" as hackathonRepo
+entity "EquipeRepository" as equipeRepo
+database "Banco de Dados" as db
+
+participante -> ctrl : POST /api/hackathons/{id}/equipes
+activate ctrl
+
+ctrl -> hackathonRepo : findById(hackathonId)
+activate hackathonRepo
+
+hackathonRepo -> db : SELECT hackathon
+activate db
+db --> hackathonRepo : Hackathon
+deactivate db
+
+hackathonRepo --> ctrl : Hackathon
+deactivate hackathonRepo
+
+ctrl -> equipeRepo : countByHackathon(hackathon)
+activate equipeRepo
+
+equipeRepo -> db : SELECT COUNT(equipes)
+activate db
+db --> equipeRepo : quantidade
+deactivate db
+
+equipeRepo --> ctrl : quantidadeEquipes
+deactivate equipeRepo
+
+alt Hackathon inexistente
+    ctrl --> participante : 404 Not Found
+
+else Limite de equipes atingido
+    ctrl --> participante : Erro de Validação (400 Bad Request)
+
+else Dados válidos
+    ctrl -> equipeRepo : save(equipe)
+    activate equipeRepo
+
+    equipeRepo -> db : INSERT INTO equipe
+    activate db
+    db --> equipeRepo : Confirmação
+    deactivate db
+
+    equipeRepo --> ctrl : Equipe salva com ID
+    deactivate equipeRepo
+
+    ctrl --> participante : Sucesso (201 Created)
+end
+
+deactivate ctrl
+@enduml
