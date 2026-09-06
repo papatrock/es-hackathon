@@ -1,0 +1,28 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Participante as participante
+control "HackathonController" as ctrl
+entity "HackathonRepository" as repo
+database "Banco de Dados" as db
+
+participante -> ctrl : GET /api/hackathons/disponiveis
+activate ctrl
+
+ctrl -> repo : buscarHackathonsDisponiveis()
+activate repo
+
+repo -> db : Consultar hackathons disponíveis
+activate db
+
+db --> repo : Hackathons encontrados
+deactivate db
+
+repo --> ctrl : Lista de Hackathons
+deactivate repo
+
+ctrl --> participante : 200 OK + lista de Hackathons
+
+deactivate ctrl
+@enduml
