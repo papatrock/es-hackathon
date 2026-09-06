@@ -2,7 +2,22 @@ Requisitos
 Java 21
 
 
+## Como rodar
+
+Execute os comandos abaixo na pasta `hackathon-api`.
+
+Antes de iniciar o Spring, o PostgreSQL precisa estar rodando e o banco `hackathondb` deve existir. O Flyway cria as tabelas e insere os dados de exemplo dentro desse banco; ele não cria o banco em si.
+
 **comandos docker**
+
+O Docker Compose está configurado com `POSTGRES_DB: hackathondb`, que cria o banco automaticamente na primeira inicialização de um volume vazio. Se você já tem um volume e o banco não existe, suba o serviço e crie o banco manualmente, sem apagar os dados existentes:
+
+```bash
+docker compose up -d db
+docker compose exec db psql -U admin -d postgres -c "CREATE DATABASE hackathondb;"
+```
+
+O comando de criação só precisa ser executado se o banco ainda não existir.
 
 ```bash
 # sobe apenas o banco
@@ -25,6 +40,14 @@ $ docker compose --profile all up -d --build --force-recreate
 
 **sem docker**
 
+```sql
+CREATE DATABASE hackathondb;
+```
+
+Confira a conexão no `application.yaml`: por padrão, a aplicação usa `localhost:5432`, banco `hackathondb`, usuário `postgres` e senha `1234`. Esse usuário precisa existir e ter permissão para criar tabelas no banco (TODO adicionar env). Se usar outro usuário, ajuste as credenciais ou configure `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` e `SPRING_DATASOURCE_PASSWORD`.
+
+Depois de criar o banco, inicie a aplicação. O Flyway executará automaticamente as migrations pendentes.
+
 ```bash
 # roda o spring
 $ mvn spring-boot:run
@@ -40,6 +63,7 @@ $ mvn spring-boot:run
 * Lombok: Redução de código boilerplate (Getters, Setters e Construtores).
 * SpringDoc OpenAPI (Starter WebMVC UI): Geração e renderização automática do Swagger.
 * Spring Boot DevTools: Live reload para recarregamento rápido durante o desenvolvimento.
+* flyway: controla as alterações do banco por arquivos SQL versionados.
 
 US = User Story        → item do backlog
 UC = Use Case          → Caso de Uso
