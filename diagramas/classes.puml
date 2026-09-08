@@ -1,5 +1,16 @@
 @startuml Diagrama de Classes Conceituais
 
+skinparam classAttributeIconSize 0
+
+abstract class Usuario {
+    nome
+    email
+    senha
+    cargo
+}
+
+class Organizador extends Usuario
+
 class Hackathon {
     nome
     dataInicio
@@ -11,15 +22,14 @@ class Equipe {
     nome
 }
 
-class Participante
+class Participante extends Usuario
 
 class Projeto {
     nome
     descricao
 }
 
-class Jurado {
-    nome
+class Jurado extends Usuario {
     especialidade
 }
 
@@ -30,10 +40,11 @@ class Avaliacao {
 
 Hackathon "1" -- "0..*" Equipe : possui
 Equipe "0..*" -- "1..*" Participante : formada por
-
 Equipe "1" -- "1" Projeto : desenvolve >
+
 Jurado "1" -- "0..*" Avaliacao : realiza >
 Projeto "1" -- "0..*" Avaliacao : recebe >
 Hackathon "1" -- "0..*" Jurado : convida >
+Organizador "1" -- "0..*" Hackathon : gerencia >
 
 @enduml
