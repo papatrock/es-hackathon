@@ -24,7 +24,8 @@ public final class ApiDtos {
 
     public record ParticipanteRequest(
         @NotBlank String nome,
-        @NotBlank @Email String email
+        @NotBlank @Email String email,
+        @NotBlank String senha
     ) {}
 
     public record ParticipanteResponse(
