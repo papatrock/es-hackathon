@@ -1,20 +1,17 @@
 package esw.hackathon.model;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
-public class Participante {
+public class Participante extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, length = 150)
-    private String nome;
-
-    @Column(nullable = false, unique = true, length = 254)
-    private String email;
+    @ManyToMany(mappedBy = "participantes")
+    private Set<Equipe> equipes = new LinkedHashSet<>();
 }

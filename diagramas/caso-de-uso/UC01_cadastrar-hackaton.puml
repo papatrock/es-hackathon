@@ -2,8 +2,10 @@
 
 left to right direction
 
+actor "Usuário" as Usuario
 actor Organizador
 actor Participante
+actor Jurado
 
 rectangle "Sistema de Hackathons" {
     usecase "UC01\nCadastrar Hackathon" as UC01
