@@ -1,0 +1,29 @@
+@startuml Consulta Avaliações
+autonumber
+skinparam style strictuml
+skinparam BoxPadding 10
+skinparam ParticipantPadding 10
+
+actor "Organizador" as Ator
+control "AvaliacaoController" as ctrl
+entity "AvaliacaoService" as srv
+entity "Avaliacaorepository" as repo
+database "Banco de Dados" as DB
+
+Ator -> ctrl : GET /api/avaliacoes
+activate ctrl
+ctrl -> srv : listarTodasAvaliacoes()
+activate srv
+srv -> repo : findAll()
+activate repo
+repo -> DB : SELECT * FROM avaliacao ...
+activate DB
+DB --> repo : Retorna lista de avaliações
+deactivate DB
+repo --> srv : List<Avaliacao>
+deactivate repo
+srv --> ctrl : List<AvaliacaoResponseDTO>
+deactivate srv
+ctrl --> Ator : 200 OK (Lista de Avaliações)
+deactivate ctrl
+@enduml

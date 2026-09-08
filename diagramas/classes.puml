@@ -1,4 +1,4 @@
-@startuml
+@startuml Diagrama de Classes Conceituais
 
 class Hackathon {
     nome
@@ -13,7 +13,27 @@ class Equipe {
 
 class Participante
 
+class Projeto {
+    nome
+    descricao
+}
+
+class Jurado {
+    nome
+    especialidade
+}
+
+class Avaliacao {
+    nota
+    feedback
+}
+
 Hackathon "1" -- "0..*" Equipe : possui
 Equipe "0..*" -- "1..*" Participante : formada por
+
+Equipe "1" -- "1" Projeto : desenvolve >
+Jurado "1" -- "0..*" Avaliacao : realiza >
+Projeto "1" -- "0..*" Avaliacao : recebe >
+Hackathon "1" -- "0..*" Jurado : convida >
 
 @enduml

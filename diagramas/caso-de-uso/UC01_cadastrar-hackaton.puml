@@ -1,4 +1,4 @@
-@startuml
+@startuml Diagrama de Casos de Uso
 
 left to right direction
 
@@ -11,15 +11,25 @@ rectangle "Sistema de Hackathons" {
     usecase "UC03\nCriar Equipe" as UC03
     usecase "UC04\nAdicionar Participante\nà Equipe" as UC04
     usecase "UC05\nBuscar Hackathons\nDisponíveis" as UC05
+
+    usecase "UC06\nAvaliar Projeto" as UC06
+    usecase "UC07\nConsultar Informações\nde Avaliações" as UC07
+    usecase "UC08\nConsultar Classificação\nFinal dos Projetos" as UC08
 }
 
 
 
 Organizador --> UC01
+Organizador --> UC07
+Organizador --> UC08
 
 Participante --> UC02
 Participante --> UC03
 Participante --> UC04
-
 Participante --> UC05
+Participante --> UC08
+
+Jurado --> UC06
+Jurado --> UC08
+
 @enduml

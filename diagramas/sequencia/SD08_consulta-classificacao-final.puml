@@ -1,0 +1,29 @@
+@startuml Consulta da Classificação Final
+autonumber
+skinparam style strictuml
+skinparam BoxPadding 10
+skinparam ParticipantPadding 10
+
+actor "Usuário (Participante/Organizador)" as Ator
+control "ProjetoController" as ctrl
+entity "ProjetoService" as srv
+entity "ProjetoRepository" as repo
+database "Banco de Dados" as DB
+
+Ator -> ctrl : GET /api/projetos/ranking
+activate ctrl
+ctrl -> srv : calcularClassificacaoFinal()
+activate srv
+srv -> repo : findProjetosComMediaOrdenados()
+activate repo
+repo -> DB : SELECT p.*, AVG(a.nota) as media FROM projeto p LEFT JOIN avaliacao a ON p.id = a.projeto_id GROUP BY p.id ORDER BY media DESC
+activate DB
+DB --> repo : Retorna projetos ordenados por média
+deactivate DB
+repo --> srv : List<ProjetoComMediaDTO>
+deactivate repo
+srv --> ctrl : List<RankingResponseDTO>
+deactivate srv
+ctrl --> Ator : 200 OK (Ranking Ordenado)
+deactivate ctrl
+@enduml

@@ -1,0 +1,29 @@
+@startuml Avaliação de Projetos
+autonumber
+skinparam style strictuml
+skinparam BoxPadding 10
+skinparam ParticipantPadding 10
+
+actor "Jurado" as Ator
+control "AvaliacaoController" as ctrl
+entity "AvaliacaoService" as srv
+entity "Avaliacaorepository" as repo
+database "Banco de Dados" as DB
+
+Ator -> ctrl : POST /api/avaliacoes (projetoId, nota, feedback)
+activate ctrl
+ctrl -> srv : submeterAvaliacao(juradoId, dados)
+activate srv
+srv -> repo : save(avaliacao)
+activate repo
+repo -> DB : INSERT INTO avaliacao ...
+activate DB
+DB --> repo : Confirmação de salvamento
+deactivate DB
+repo --> srv : Instância salva
+deactivate repo
+srv --> ctrl : Dados da avaliação processada
+deactivate srv
+ctrl --> Ator : 201 Created (Dados da Avaliação)
+deactivate ctrl
+@enduml
