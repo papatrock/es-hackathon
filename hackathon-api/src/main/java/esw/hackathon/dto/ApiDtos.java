@@ -53,7 +53,7 @@ public final class ApiDtos {
         @NotBlank @Email String email,
         @NotBlank String senha
     ) {}
-    
+
     public record OrganizadorResponse(
         Long id,
         String nome,
@@ -82,7 +82,9 @@ public final class ApiDtos {
     public record AvaliacaoResponse(
         Long id,
         Long projetoId,
+        //Futuro: String projetoTitulo, //ou algo do tipo
         Long juradoId,
+        String juradoNome,
         Double nota,
         String feedback
     ) {}
