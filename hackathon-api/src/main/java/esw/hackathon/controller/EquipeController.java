@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name="Equipe")
@@ -25,6 +27,7 @@ public class EquipeController {
         return service.buscar(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PostMapping("/api/hackathons/{hackathonId}/equipes")
     public ResponseEntity<EquipeResponse> criar(@PathVariable Long hackathonId, @Valid @RequestBody EquipeRequest request) {
         var response = service.criar(hackathonId, request);
@@ -36,6 +39,7 @@ public class EquipeController {
         return service.listarPorHackathon(hackathonId);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PostMapping("/api/equipes/{id}/participantes/{participanteId}")
     public EquipeResponse adicionar(
         @PathVariable Long id,
@@ -43,17 +47,20 @@ public class EquipeController {
     return service.adicionar(id, participanteId);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @DeleteMapping("/api/equipes/{id}/participantes/{participanteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id, @PathVariable Long participanteId) {
         service.remover(id, participanteId);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PutMapping("/api/equipes/{id}")
     public EquipeResponse atualizar(@PathVariable Long id, @Valid @RequestBody EquipeRequest request) {
         return service.atualizar(id, request);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @DeleteMapping("/api/equipes/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id) {
