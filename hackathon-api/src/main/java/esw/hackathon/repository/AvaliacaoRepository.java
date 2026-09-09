@@ -12,4 +12,6 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     List<Avaliacao> findByProjetoIdOrderById(Long projetoId);
 
     List<Avaliacao> findByJuradoIdOrderById(Long juradoId);
+
+    List<Avaliacao> findByJuradoHackathonId(Long hackathonId);    
 }

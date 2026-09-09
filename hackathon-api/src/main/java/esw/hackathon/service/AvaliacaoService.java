@@ -107,6 +107,7 @@ public class AvaliacaoService {
             a.getId(),
             a.getProjeto().getId(),
             a.getJurado().getId(),
+            a.getJurado().getNome(),
             a.getNota(),
             a.getFeedback()
         );
