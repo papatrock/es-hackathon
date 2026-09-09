@@ -4,6 +4,7 @@ import esw.hackathon.dto.ApiDtos.ClassificacaoResponse;
 import esw.hackathon.model.Avaliacao;
 import esw.hackathon.repository.AvaliacaoRepository;
 import esw.hackathon.repository.HackathonRepository;
+import esw.hackathon.repository.JuradoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class ClassificacaoService {
 
     private final AvaliacaoRepository avaliacoes;
     private final HackathonRepository hackathons;
+    private final JuradoRepository jurados;
 
     public List<ClassificacaoResponse> calcular(Long hackathonId) {
         if (!hackathons.existsById(hackathonId)) {
@@ -32,12 +34,18 @@ public class ClassificacaoService {
             );
         }
 
+        var totalJurados = jurados.countByHackathonId(hackathonId);
+
+        if (totalJurados == 0) {
+            return List.of();
+        }
+
         var avaliacoesPorProjeto = avaliacoes
-                                    .findByJuradoHackathonId(hackathonId)
-                                    .stream()
-                                    .collect(Collectors.groupingBy(
-                                        Avaliacao::getProjetoId
-                                    ));
+                                .findByJuradoHackathonId(hackathonId)
+                                .stream()
+                                .collect(Collectors.groupingBy(
+                                    Avaliacao::getProjetoId
+                                ));
 
         var resultados = avaliacoesPorProjeto.entrySet()
                         .stream()
@@ -45,15 +53,23 @@ public class ClassificacaoService {
                             var projetoId = entry.getKey();
                             var lista = entry.getValue();
             
-                            var media = lista.stream()
+                            var mediaProjeto = lista.stream()
                                 .mapToDouble(Avaliacao::getNota)
                                 .average()
                                 .orElse(0.0);
             
+                            var quantidadeAvaliacoes = (long) lista.size();
+
+                            var cobertura = (double) quantidadeAvaliacoes / totalJurados;
+            
+                            var notaFinal =
+                                cobertura * mediaProjeto
+                                + (1.0 - cobertura) * 5.0;
+            
                             return new ResultadoProjeto(
                                 projetoId,
-                                media,
-                                (long) lista.size()
+                                notaFinal,
+                                quantidadeAvaliacoes
                             );
                         })
                         .sorted(
