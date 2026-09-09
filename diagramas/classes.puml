@@ -6,7 +6,6 @@ abstract class Usuario {
     nome
     email
     senha
-    cargo
 }
 
 class Organizador extends Usuario
@@ -25,12 +24,9 @@ class Equipe {
 class Participante extends Usuario
 
 class Projeto {
-    nome
-    descricao
 }
 
 class Jurado extends Usuario {
-    especialidade
 }
 
 class Avaliacao {
