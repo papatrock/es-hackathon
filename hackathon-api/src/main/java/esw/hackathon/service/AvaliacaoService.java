@@ -101,7 +101,9 @@ public class AvaliacaoService {
         return new AvaliacaoResponse(
             a.getId(),
             a.getProjetoId(),
+            //Futuro: a.getProjeto().getNome(), //ou algo do tipo
             a.getJurado().getId(),
+            a.getJurado().getNome(),
             a.getNota(),
             a.getFeedback()
         );

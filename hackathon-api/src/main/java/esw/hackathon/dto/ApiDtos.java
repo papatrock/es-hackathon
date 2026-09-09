@@ -48,6 +48,18 @@ public final class ApiDtos {
         Long hackathonId
     ) {}
 
+    public record OrganizadorRequest(
+        @NotBlank String nome,
+        @NotBlank @Email String email,
+        @NotBlank String senha
+    ) {}
+
+    public record OrganizadorResponse(
+        Long id,
+        String nome,
+        String email
+    ) {}
+
     public record EquipeRequest(
         @NotBlank String nome,
         @NotEmpty Set<@NotNull @Positive Long> participanteIds
@@ -70,7 +82,9 @@ public final class ApiDtos {
     public record AvaliacaoResponse(
         Long id,
         Long projetoId,
+        //Futuro: String projetoTitulo, //ou algo do tipo
         Long juradoId,
+        String juradoNome,
         Double nota,
         String feedback
     ) {}
