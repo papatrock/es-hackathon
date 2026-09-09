@@ -1,6 +1,9 @@
-Requisitos
-Java 21
+# Requisitos
 
+- Java 21
+- Maven
+- PostgreSQL
+- Docker e Docker Compose (opcional)
 
 ## Como rodar
 
@@ -44,7 +47,24 @@ $ docker compose --profile all up -d --build --force-recreate
 CREATE DATABASE hackathondb;
 ```
 
+### Configuração
+
+A aplicação utiliza variáveis de ambiente para configurações.
+
 Confira a conexão no `application.yaml`: por padrão, a aplicação usa `localhost:5432`, banco `hackathondb`, usuário `postgres` e senha `1234`. Esse usuário precisa existir e ter permissão para criar tabelas no banco (TODO adicionar env). Se usar outro usuário, ajuste as credenciais ou configure `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME` e `SPRING_DATASOURCE_PASSWORD`.
+
+Para execução local, configure:
+
+```bash
+export JWT_SECRET=<sua-chave-jwt>
+export ADMIN_EMAIL=<email-do-administrador>
+export ADMIN_PASSWORD=<senha-do-administrador>
+```
+
+A JWT_secret pode ser gerada com:
+```bash
+openssl rand -base64 32
+```
 
 Depois de criar o banco, inicie a aplicação. O Flyway executará automaticamente as migrations pendentes.
 
