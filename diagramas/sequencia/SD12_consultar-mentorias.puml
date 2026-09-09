@@ -1,0 +1,29 @@
+@startuml Consulta Mentorias por Equipe
+
+skinparam style strictuml
+skinparam BoxPadding 10
+skinparam ParticipantPadding 10
+
+actor "Participante" as Ator
+control "MentoriaController" as ctrl
+entity "MentoriaService" as srv
+entity "MentoriaRepository" as repo
+database "Banco de Dados" as DB
+
+Ator -> ctrl : GET /api/equipes/{equipeId}/mentorias
+activate ctrl
+ctrl -> srv : listarMentoriasPorEquipe(equipeId)
+activate srv
+srv -> repo : findByEquipeId(equipeId)
+activate repo
+repo -> DB : SELECT * FROM mentoria WHERE equipe_id = ...
+activate DB
+DB --> repo : Retorna lista de mentorias
+deactivate DB
+repo --> srv : List<Mentoria>
+deactivate repo
+srv --> ctrl : List<MentoriaResponseDTO>
+deactivate srv
+ctrl --> Ator : 200 OK (Lista de Mentorias)
+deactivate ctrl
+@enduml

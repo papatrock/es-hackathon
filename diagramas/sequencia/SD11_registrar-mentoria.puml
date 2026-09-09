@@ -1,0 +1,67 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Mentor as mentor
+control "MentoriaController" as ctrl
+control "MentoriaService" as mentoriaService
+entity "MentorRepository" as mentorRepo
+entity "EquipeRepository" as equipeRepo
+entity "MentoriaRepository" as mentoriaRepo
+database "Banco de Dados" as db
+
+mentor -> ctrl : POST /api/mentorias\n(mentorId, equipeId, comentarios)
+activate ctrl
+
+ctrl -> mentoriaService : registrarMentoria(mentorId, equipeId, comentarios)
+activate mentoriaService
+
+mentoriaService -> mentorRepo : findById(mentorId)
+activate mentorRepo
+mentorRepo -> db : SELECT mentor
+activate db
+db --> mentorRepo : Mentor
+deactivate db
+mentorRepo --> mentoriaService : Mentor
+deactivate mentorRepo
+
+alt Mentor Inexistente
+    mentoriaService --> ctrl : Mentor não encontrado
+    ctrl --> mentor : 404 Not Found
+
+else Mentor Existe
+
+    mentoriaService -> equipeRepo : findById(equipeId)
+    activate equipeRepo
+    equipeRepo -> db : SELECT equipe
+    activate db
+    db --> equipeRepo : Equipe
+    deactivate db
+    equipeRepo --> mentoriaService : Equipe
+    deactivate equipeRepo
+
+    alt Equipe Inexistente
+        mentoriaService --> ctrl : Equipe não encontrada
+        ctrl --> mentor : 404 Not Found
+
+    else Equipe Existe
+
+        mentoriaService -> mentoriaService : new Mentoria(mentor, equipe, comentarios)
+
+        mentoriaService -> mentoriaRepo : save(mentoria)
+        activate mentoriaRepo
+        mentoriaRepo -> db : INSERT INTO mentoria
+        activate db
+        db --> mentoriaRepo : Confirmação
+        deactivate db
+        mentoriaRepo --> mentoriaService : Mentoria salva com ID
+        deactivate mentoriaRepo
+
+        mentoriaService --> ctrl : Mentoria
+        ctrl --> mentor : Sucesso (201 Created)
+    end
+end
+
+deactivate mentoriaService
+deactivate ctrl
+@enduml
