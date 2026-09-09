@@ -23,11 +23,7 @@ public class Avaliacao {
     @JoinColumn(name = "jurado_id", nullable = false)
     private Jurado jurado;
 
-    //mudar quando tiver projeto
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "projeto_id", nullable = false)
     private Projeto projeto;
- 
-    // @Column(name = "projeto_id", nullable = false)
-    // private Long projetoId;
 }

@@ -83,6 +83,14 @@ public class AvaliacaoService {
         Projeto projeto = projetos.findById(r.projetoId())
                 .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Projeto não encontrado"));
 
+        if (!jurado.getHackathon().getId()
+                .equals(projeto.getEquipe().getHackathon().getId())) {
+            throw new ResponseStatusException(
+                BAD_REQUEST,
+                "Jurado e projeto pertencem a hackathons diferentes"
+            );
+        }
+
         var avaliacao = new Avaliacao();  
         avaliacao.setProjeto(projeto);  
         avaliacao.setJurado(jurado);
