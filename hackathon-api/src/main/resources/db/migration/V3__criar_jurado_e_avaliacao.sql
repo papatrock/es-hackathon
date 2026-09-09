@@ -14,7 +14,7 @@ CREATE TABLE avaliacao (
     feedback TEXT NOT NULL,
     
     jurado_id BIGINT NOT NULL REFERENCES jurado(id),
-    projeto_id BIGINT NOT NULL, -- mais tarde mudar para referenciar projeto -- talvez tenha que mudar a ordem de V x.x
+    projeto_id BIGINT NOT NULL REFERENCES projeto(id), -- mais tarde mudar para referenciar projeto -- talvez tenha que mudar a ordem de V x.x
 
     CONSTRAINT ck_avaliacao_nota
         CHECK (nota >= 0 AND nota <= 10),
