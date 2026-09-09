@@ -88,4 +88,11 @@ public final class ApiDtos {
         Double nota,
         String feedback
     ) {}
+
+    public record ClassificacaoResponse(
+        Integer posicao,
+        Long projetoId,
+        Double notaFinal,
+        Long quantidadeAvaliacoes
+    ) {}
 }
