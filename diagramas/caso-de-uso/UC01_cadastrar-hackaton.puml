@@ -1,6 +1,8 @@
 @startuml Diagrama de Casos de Uso
 
 left to right direction
+skinparam packageStyle rectangle
+skinparam linetype ortho
 
 actor "Usuário" as Usuario
 actor Organizador
@@ -8,7 +10,13 @@ actor Participante
 actor Jurado
 actor Estudante
 
+Organizador -up-|> Usuario
+Participante -up-|> Usuario
+Jurado -up-|> Usuario
+
 rectangle "Sistema de Hackathons" {
+    usecase "UC00\nAutenticar-se" as Login
+
     usecase "UC01\nCadastrar Hackathon" as UC01
     usecase "UC02\nCadastrar Participante" as UC02
     usecase "UC03\nCriar Equipe" as UC03
@@ -20,19 +28,17 @@ rectangle "Sistema de Hackathons" {
     usecase "UC08\nConsultar Classificação\nFinal dos Projetos" as UC08
 }
 
-
+Usuario --> Login
+Usuario --> UC08
 
 Organizador --> UC01
 Organizador --> UC07
-Organizador --> UC08
 
 Estudante --> UC02
 Participante --> UC03
 Participante --> UC04
 Participante --> UC05
-Participante --> UC08
 
 Jurado --> UC06
-Jurado --> UC08
 
 @enduml
