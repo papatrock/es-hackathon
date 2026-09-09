@@ -22,6 +22,15 @@ public final class ApiDtos {
         Integer maxEquipes
     ) {}
 
+    public record LoginRequest(
+        @NotBlank @Email String email,
+        @NotBlank String senha
+    ) {}
+    
+    public record LoginResponse(
+        String token
+    ) {}
+
     public record ParticipanteRequest(
         @NotBlank String nome,
         @NotBlank @Email String email,
