@@ -24,6 +24,16 @@ class Equipe {
 class Participante extends Usuario
 
 class Projeto {
+    titulo
+    descricao
+    areaTematica
+}
+
+class Mentor extends Usuario {
+}
+
+class Mentoria {
+    comentarios
 }
 
 class Jurado extends Usuario {
@@ -36,7 +46,12 @@ class Avaliacao {
 
 Hackathon "1" -- "0..*" Equipe : possui
 Equipe "0..*" -- "1..*" Participante : formada por
-Equipe "1" -- "1" Projeto : desenvolve >
+Equipe "1" -- "0..1" Projeto : desenvolve >
+
+Mentor "1" -- "0..*" Mentoria : registra >
+Hackathon "1" -- "0..*" Mentor : credencia >
+
+Equipe "1" -- "0..*" Mentoria : recebe >
 
 Jurado "1" -- "0..*" Avaliacao : realiza >
 Projeto "1" -- "0..*" Avaliacao : recebe >

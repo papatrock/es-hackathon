@@ -9,10 +9,12 @@ actor Organizador
 actor Participante
 actor Jurado
 actor Estudante
+actor Mentor
 
 Organizador -up-|> Usuario
 Participante -up-|> Usuario
 Jurado -up-|> Usuario
+Mentor -up-|> Usuario
 
 rectangle "Sistema de Hackathons" {
     usecase "UC00\nAutenticar-se" as Login
@@ -23,22 +25,37 @@ rectangle "Sistema de Hackathons" {
     usecase "UC04\nAdicionar Participante\nà Equipe" as UC04
     usecase "UC05\nBuscar Hackathons\nDisponíveis" as UC05
 
-    usecase "UC06\nAvaliar Projeto" as UC06
-    usecase "UC07\nConsultar Informações\nde Avaliações" as UC07
-    usecase "UC08\nConsultar Classificação\nFinal dos Projetos" as UC08
+    usecase "UC06\nCadastrar Projeto" as UC06
+    usecase "UC07\nConsultar Projetos" as UC07
+    usecase "UC08\nRegistrar Mentorias" as UC08
+    usecase "UC09\nConsultar Mentorias" as UC09
+
+    usecase "UC10\nAvaliar Projeto" as UC10
+    usecase "UC11\nConsultar Informações\nde Avaliações" as UC11
+    usecase "UC12\nConsultar Classificação\nFinal dos Projetos" as UC12
 }
 
 Usuario --> Login
-Usuario --> UC08
+Usuario --> UC12
 
 Organizador --> UC01
+Organizador --> UC11
 Organizador --> UC07
+Organizador --> UC09
 
 Estudante --> UC02
 Participante --> UC03
 Participante --> UC04
 Participante --> UC05
+Participante --> UC07
+Participante --> UC06
 
-Jurado --> UC06
+Jurado --> UC10
+Jurado --> UC07
+
+Mentor --> UC07
+Mentor --> UC08
+Mentor --> UC09
+
 
 @enduml
