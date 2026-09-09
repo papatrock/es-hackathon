@@ -61,7 +61,7 @@ export ADMIN_EMAIL=<email-do-administrador>
 export ADMIN_PASSWORD=<senha-do-administrador>
 ```
 
-A JWT_secret pode ser gerada com:
+A JWT_SECRET pode ser gerada com:
 ```bash
 openssl rand -base64 32
 ```
