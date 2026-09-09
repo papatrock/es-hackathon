@@ -1,0 +1,72 @@
+@startuml
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor Participante as participante
+control "ProjetoController" as ctrl
+control "ProjetoService" as projetoService
+entity "EquipeRepository" as equipeRepo
+entity "ProjetoRepository" as projetoRepo
+database "Banco de Dados" as db
+
+participante -> ctrl : POST /api/equipes/{equipeId}/\nprojeto(titulo,descricao,areaTematica)
+activate ctrl
+
+ctrl -> projetoService : criarProjeto(titulo,equipeId,\ndescricao,areaTematica)
+activate projetoService
+
+projetoService -> equipeRepo : findById(equipeId)
+activate equipeRepo
+
+equipeRepo -> db : SELECT equipe
+activate db
+db --> equipeRepo : Equipe
+deactivate db
+
+equipeRepo --> projetoService : Equipe
+deactivate equipeRepo
+
+alt Equipe Inexistente
+    projetoService --> ctrl : Equipe não Encontrada
+    ' deactivate projetoService
+    ctrl --> participante : 404 Not Found
+    ' deactivate ctrl
+
+else Equipe Existe
+
+    ' activate projetoService;
+    ' activate ctrl
+    projetoService -> projetoRepo : findByEquipeId(equipeId)
+    activate projetoRepo
+
+    projetoRepo -> db : SELECT projeto
+    activate db
+    db --> projetoRepo : Projeto
+    deactivate db
+
+    projetoRepo --> projetoService : Projeto
+    deactivate projetoRepo
+
+    alt Projeto Já Existe
+        projetoService --> ctrl : Projeto já existe
+        ctrl --> participante : Erro de Validação (422 Unprocessable Entity)
+    else Projeto Não Existe
+
+    projetoService -> projetoService : new Projeto(titulo, descricao, areaTematica, equipe)
+
+        projetoService -> projetoRepo : save(projeto)
+        activate projetoRepo
+
+        projetoRepo -> db : INSERT INTO Projeto
+        activate db
+        db --> projetoRepo : Confirmação
+        deactivate db
+
+        projetoRepo --> projetoService : Projeto salvo com ID
+        deactivate projetoRepo
+
+        projetoService --> ctrl:  Projeto
+        ctrl --> participante : Sucesso (201 Created)
+    end
+end
+@enduml
