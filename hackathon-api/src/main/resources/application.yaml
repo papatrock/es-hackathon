@@ -3,11 +3,21 @@ spring:
     name: hackathon
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/hackathondb}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:1234}
+    username: ${SPRING_DATASOURCE_USERNAME:admin}
+    password: ${SPRING_DATASOURCE_PASSWORD:adminpassword}
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: validate
   flyway:
     locations: classpath:db/migration
+app:
+  bootstrap:
+    admin:
+      nome: ${ADMIN_NAME:Administrador}
+      email: ${ADMIN_EMAIL}
+      password: ${ADMIN_PASSWORD}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 3600000
