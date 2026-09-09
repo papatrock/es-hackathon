@@ -6,6 +6,7 @@ actor "Usuário" as Usuario
 actor Organizador
 actor Participante
 actor Jurado
+actor Estudante
 
 rectangle "Sistema de Hackathons" {
     usecase "UC01\nCadastrar Hackathon" as UC01
@@ -25,7 +26,7 @@ Organizador --> UC01
 Organizador --> UC07
 Organizador --> UC08
 
-Participante --> UC02
+Estudante --> UC02
 Participante --> UC03
 Participante --> UC04
 Participante --> UC05
