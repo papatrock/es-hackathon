@@ -59,4 +59,19 @@ public final class ApiDtos {
         Long hackathonId,
         List<ParticipanteResponse> participantes
     ) {}
+
+    public record AvaliacaoRequest(
+        @NotNull @Positive Long projetoId,
+        @NotNull @Positive Long juradoId,
+        @NotNull @DecimalMin("0.0") @DecimalMax("10.0") Double nota,
+        @NotBlank String feedback
+    ) {}
+
+    public record AvaliacaoResponse(
+        Long id,
+        Long projetoId,
+        Long juradoId,
+        Double nota,
+        String feedback
+    ) {}
 }
