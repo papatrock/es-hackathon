@@ -98,6 +98,42 @@ public final class ApiDtos {
         String feedback
     ) {}
 
+    public record ProjetoRequest(
+        @NotBlank String titulo,
+        @NotBlank String descricao,
+        @NotBlank String areaTematica
+    ) {}
+
+    public record ProjetoResponse(
+        Long id,
+        String titulo,
+        String descricao,
+        String areaTematica,
+        Long equipeId
+    ) {}
+
+    public record MentorRequest(
+        @NotNull @Positive Long hackathonId
+    ) {}
+
+    public record MentorResponse(
+        Long id,
+        Long hackathonId
+    ) {}
+
+    public record MentoriaRequest(
+        @NotBlank String comentarios,
+        @NotNull @Positive Long mentorId,
+        @NotNull @Positive Long equipeId
+    ) {}
+
+    public record MentoriaResponse(
+        Long id,
+        String comentarios,
+        Long equipeId,
+        Long mentorId
+    ) {}
+
     public record ClassificacaoResponse(
         Integer posicao,
         Long projetoId,

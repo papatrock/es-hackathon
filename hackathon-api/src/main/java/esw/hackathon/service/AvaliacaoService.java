@@ -3,8 +3,10 @@ package esw.hackathon.service;
 import esw.hackathon.dto.ApiDtos.AvaliacaoRequest;
 import esw.hackathon.dto.ApiDtos.AvaliacaoResponse;
 import esw.hackathon.model.Avaliacao;
+import esw.hackathon.model.Projeto;
 import esw.hackathon.repository.AvaliacaoRepository;
 import esw.hackathon.repository.JuradoRepository;
+import esw.hackathon.repository.ProjetoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ public class AvaliacaoService {
 
     private final AvaliacaoRepository repository;
     private final JuradoRepository jurados;
+    private final ProjetoRepository projetos;
 
     public List<AvaliacaoResponse> listar() {
         return repository.findAll(
@@ -77,9 +80,11 @@ public class AvaliacaoService {
                 "Jurado já avaliou este projeto"
             );
         }
+        Projeto projeto = projetos.findById(r.projetoId())
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Projeto não encontrado"));
 
-        var avaliacao = new Avaliacao();    
-        avaliacao.setProjetoId(r.projetoId());
+        var avaliacao = new Avaliacao();  
+        avaliacao.setProjeto(projeto);  
         avaliacao.setJurado(jurado);
         avaliacao.setNota(r.nota());
         avaliacao.setFeedback(r.feedback().strip());
@@ -100,8 +105,7 @@ public class AvaliacaoService {
     public static AvaliacaoResponse response(Avaliacao a) {
         return new AvaliacaoResponse(
             a.getId(),
-            a.getProjetoId(),
-            //Futuro: a.getProjeto().getNome(), //ou algo do tipo
+            a.getProjeto().getId(),
             a.getJurado().getId(),
             a.getJurado().getNome(),
             a.getNota(),
