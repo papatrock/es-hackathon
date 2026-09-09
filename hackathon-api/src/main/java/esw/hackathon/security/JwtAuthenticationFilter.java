@@ -7,9 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import esw.hackathon.model.Organizador;
+import esw.hackathon.model.Jurado;
+import esw.hackathon.model.Participante;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,12 +60,26 @@ public class JwtAuthenticationFilter
                 && SecurityContextHolder
                     .getContext()
                     .getAuthentication() == null) {
+            
+            List<SimpleGrantedAuthority> authorities = switch (usuario) {
+                case Organizador o ->
+                    List.of(new SimpleGrantedAuthority("ROLE_ORGANIZADOR"));
+
+                case Jurado j ->
+                    List.of(new SimpleGrantedAuthority("ROLE_JURADO"));
+
+                case Participante p ->
+                    List.of(new SimpleGrantedAuthority("ROLE_PARTICIPANTE"));
+
+                default ->
+                    List.of();
+            };
 
             var authentication =
                 new UsernamePasswordAuthenticationToken(
                     usuario,
                     null,
-                    List.of()
+                    authorities
                 );
 
             SecurityContextHolder

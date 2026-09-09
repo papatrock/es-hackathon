@@ -10,8 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.http.HttpMethod;
 
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -35,6 +38,7 @@ public class SecurityConfig {
                 )
             )
 
+            // Regras Globais / Público / Convidado / Guest
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/auth/login",
@@ -42,6 +46,12 @@ public class SecurityConfig {
                     "/v3/api-docs/**"
                 )
                 .permitAll()
+
+                .requestMatchers(
+                    HttpMethod.POST,
+                    "/api/participantes"
+                ).permitAll()
+
                 .anyRequest()
                 .authenticated()
             )
