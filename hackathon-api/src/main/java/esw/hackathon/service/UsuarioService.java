@@ -3,6 +3,7 @@ package esw.hackathon.service;
 import esw.hackathon.model.Usuario;
 import esw.hackathon.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,6 +15,7 @@ import static org.springframework.http.HttpStatus.CONFLICT;
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public void atualizarDados(Usuario usuario, String nome, String email, String senha) {
         var emailNormalizado = email.strip().toLowerCase(Locale.ROOT);
@@ -26,6 +28,6 @@ public class UsuarioService {
 
         usuario.setNome(nome.strip());
         usuario.setEmail(emailNormalizado);
-        usuario.setSenha(senha);
+        usuario.setSenha(passwordEncoder.encode(senha));
     }
 }
