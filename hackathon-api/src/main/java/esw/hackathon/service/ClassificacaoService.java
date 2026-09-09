@@ -44,7 +44,7 @@ public class ClassificacaoService {
                                 .findByJuradoHackathonId(hackathonId)
                                 .stream()
                                 .collect(Collectors.groupingBy(
-                                    Avaliacao::getProjetoId
+                                    avaliacao -> avaliacao.getProjeto().getId()
                                 ));
 
         var resultados = avaliacoesPorProjeto.entrySet()
