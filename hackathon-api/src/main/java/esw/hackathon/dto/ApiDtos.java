@@ -34,6 +34,20 @@ public final class ApiDtos {
         String email
     ) {}
 
+    public record JuradoRequest(
+        @NotBlank String nome,
+        @NotBlank @Email String email,
+        @NotBlank String senha,
+        @NotNull @Positive Long hackathonId
+    ) {}
+    
+    public record JuradoResponse(
+        Long id,
+        String nome,
+        String email,
+        Long hackathonId
+    ) {}
+
     public record EquipeRequest(
         @NotBlank String nome,
         @NotEmpty Set<@NotNull @Positive Long> participanteIds
