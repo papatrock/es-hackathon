@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 @RestController @RequiredArgsConstructor
 @RequestMapping("/api/hackathons")
 @Tag(name="Hackathon")
@@ -25,16 +27,19 @@ public class HackathonController {
         return service.buscar(id); 
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @PostMapping public ResponseEntity<HackathonResponse> criar(@Valid @RequestBody HackathonRequest request)
     {
         var response = service.criar(request);
         return ResponseEntity.created(URI.create("/api/hackathons/" + response.id())).body(response);
     }
     
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @PutMapping("/{id}") public HackathonResponse atualizar(@PathVariable Long id, @Valid @RequestBody HackathonRequest request) {
         return service.atualizar(id, request); 
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @DeleteMapping("/{id}") @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id) {
         service.excluir(id);

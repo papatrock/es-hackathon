@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import java.net.URI;
 import java.util.List;
 
@@ -25,6 +27,7 @@ public class ProjetoController {
         return service.buscar(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PostMapping("/api/equipes/{equipeId}/projetos")
     public ResponseEntity<ProjetoResponse> criar(@PathVariable Long equipeId, @Valid @RequestBody ProjetoRequest request) {
         var response = service.criar(equipeId, request);
@@ -36,12 +39,14 @@ public class ProjetoController {
         return service.buscarPorEquipe(equipeId);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @DeleteMapping("/api/projetos/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id) {
         service.excluir(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PutMapping("/api/projetos/{id}")
     public ProjetoResponse atualizar(@PathVariable Long id, @Valid @RequestBody ProjetoRequest request) {
         return service.atualizar(id, request);

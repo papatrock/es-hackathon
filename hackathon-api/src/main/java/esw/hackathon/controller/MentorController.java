@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.net.URI;
 import java.util.List;
@@ -29,6 +30,7 @@ public class MentorController {
         return service.buscar(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @PostMapping("/{usuarioId}")
     public ResponseEntity<MentorResponse> criar(
             @PathVariable Long usuarioId,

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 @RestController
 @RequestMapping("/api/avaliacoes")
 @RequiredArgsConstructor
@@ -19,16 +21,19 @@ public class AvaliacaoController {
 
     private final AvaliacaoService service;
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @GetMapping
     public List<AvaliacaoResponse> listar() {
         return service.listar();
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @GetMapping("/{id}")
     public AvaliacaoResponse buscar(@PathVariable Long id) {
         return service.buscar(id);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @GetMapping("/projeto/{projetoId}")
     public List<AvaliacaoResponse> listarPorProjeto(
             @PathVariable Long projetoId) {
@@ -36,6 +41,7 @@ public class AvaliacaoController {
         return service.listarPorProjeto(projetoId);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ORGANIZADOR')")
     @GetMapping("/jurado/{juradoId}")
     public List<AvaliacaoResponse> listarPorJurado(
             @PathVariable Long juradoId) {
@@ -44,6 +50,7 @@ public class AvaliacaoController {
     }
 
 
+    @PreAuthorize("hasAuthority('ROLE_JURADO')")
     @PostMapping
     public ResponseEntity<AvaliacaoResponse> criar(
             @Valid @RequestBody AvaliacaoRequest request) {

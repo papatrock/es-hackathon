@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.net.URI;
 import java.util.List;
@@ -44,6 +45,7 @@ public class MentoriaController {
     }
 
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @PostMapping
     public ResponseEntity<MentoriaResponse> criar(
             @Valid @RequestBody MentoriaRequest request) {
@@ -55,6 +57,7 @@ public class MentoriaController {
             .body(response);
     }
 
+    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         service.excluir(id);
