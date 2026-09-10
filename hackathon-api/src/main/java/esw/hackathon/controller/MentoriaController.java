@@ -20,16 +20,19 @@ public class MentoriaController {
 
     private final MentoriaService service;
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MENTOR', 'ROLE_ORGANIZADOR')")
     @GetMapping
     public List<MentoriaResponse> listar() {
         return service.listar();
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MENTOR', 'ROLE_ORGANIZADOR')")
     @GetMapping("/{id}")
     public MentoriaResponse buscar(@PathVariable Long id) {
         return service.buscar(id);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MENTOR', 'ROLE_ORGANIZADOR')")
     @GetMapping("/equipes/{equipeId}")
     public List<MentoriaResponse> listarPorEquipe(
             @PathVariable Long equipeId) {
@@ -37,6 +40,7 @@ public class MentoriaController {
         return service.listarPorEquipe(equipeId);
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_MENTOR', 'ROLE_ORGANIZADOR')")
     @GetMapping("/mentores/{mentorId}")
     public List<MentoriaResponse> listarPorMentor(
             @PathVariable Long mentorId) {
@@ -45,7 +49,7 @@ public class MentoriaController {
     }
 
 
-    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
     @PostMapping
     public ResponseEntity<MentoriaResponse> criar(
             @Valid @RequestBody MentoriaRequest request) {
@@ -57,7 +61,7 @@ public class MentoriaController {
             .body(response);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_PARTICIPANTE')")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
         service.excluir(id);

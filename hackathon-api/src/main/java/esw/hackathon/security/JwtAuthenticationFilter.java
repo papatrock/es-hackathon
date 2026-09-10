@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import esw.hackathon.model.Organizador;
 import esw.hackathon.model.Jurado;
 import esw.hackathon.model.Participante;
+import esw.hackathon.model.Mentor;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,6 +71,9 @@ public class JwtAuthenticationFilter
 
                 case Participante p ->
                     List.of(new SimpleGrantedAuthority("ROLE_PARTICIPANTE"));
+                
+                case Mentor m ->
+                    List.of(new SimpleGrantedAuthority("ROLE_MENTOR"));
 
                 default ->
                     List.of();
