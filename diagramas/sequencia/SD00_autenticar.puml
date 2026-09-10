@@ -1,0 +1,44 @@
+@startuml Autenticar-se
+
+skinparam style strictuml
+skinparam maxMessageSize 150
+
+actor "Usuário" as usuario
+control "AuthController" as ctrl
+entity "AuthService" as srv
+entity "UsuarioRepository" as repo
+database "Banco de Dados" as db
+
+usuario -> ctrl : POST /api/auth/login\n(email, senha)
+activate ctrl
+
+ctrl -> srv : login(email, senha)
+activate srv
+
+srv -> repo : findByEmail(email)
+activate repo
+
+repo -> db : SELECT usuario por email
+activate db
+db --> repo : Usuário encontrado
+deactivate db
+
+repo --> srv : Usuario
+deactivate repo
+
+srv -> srv : verificar senha
+
+alt Credenciais inválidas
+    srv --> ctrl : credenciais inválidas
+    ctrl --> usuario : 401 Unauthorized
+
+else Credenciais válidas
+    srv -> srv : gerar token JWT
+    srv --> ctrl : token
+    ctrl --> usuario : 200 OK + token
+end
+
+deactivate srv
+deactivate ctrl
+
+@enduml
