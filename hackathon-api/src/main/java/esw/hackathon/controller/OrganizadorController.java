@@ -4,6 +4,7 @@ import esw.hackathon.dto.ApiDtos.*;
 import esw.hackathon.service.OrganizadorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/organizadores")
 @RequiredArgsConstructor
+@Tag(name="Organizador")
 public class OrganizadorController {
 
     private final OrganizadorService service;

@@ -5,11 +5,13 @@ import esw.hackathon.dto.ApiDtos.LoginResponse;
 import esw.hackathon.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name="Autênticação")
 public class AuthController {
 
     private final AuthService service;
